@@ -1,0 +1,6 @@
+{
+  "name": "Miel et Épices",
+  "description": "Boutique en ligne premium de baklawas artisanales d'Algérie, alliant miel pur, amandes et pistaches croquantes dans une identité visuelle dorée élégante.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-normal-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-italic-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Jost", sans-serif;
+
+  /* Ground & ink — a quiet warm paper, not the templated cream+terracotta pairing */
+  --color-paper: #FBF9F5;
+  --color-ink: #1C1712;
+  --color-ink-soft: #6B6259;
+  --color-line: #E4DDD0;
+
+  /* Honey — the one accent spent sparingly (ratings, small marks, active states) */
+  --color-honey: #B9822E;
+  --color-honey-deep: #8C5F1E;
+  --color-honey-pale: #F1E2C4;
+
+  /* Pistachio — secondary accent tied to the actual ingredient, not decoration */
+  --color-pistachio: #5C6B4F;
+
+  /* Fig — the one bold, saturated moment (coffret/prestige section only) */
+  --color-fig: #3B2436;
+  --color-fig-light: #5A3A4C;
+
+  /* Dark frame — reserved for chrome (header/footer/announcement) and photo mats */
+  --color-frame: #16130F;
+  --color-frame-soft: #211C16;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-honey);
+}
+
+/* Chrome surfaces: header, footer, announcement bar — the dark frame around a light page */
+.chrome-header {
+  background: rgba(251, 249, 245, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.chrome-dark {
+  background: var(--color-frame);
+  color: #EDE7DC;
+}
+
+/* Product / photography mat: dishes are shot dark, so the mat stays dark for contrast against the paper page */
+.photo-mat {
+  background: var(--color-frame);
+}
+
+/* Plain hairline card — replaces the old glassmorphism; structure, not decoration */
+.panel {
+  background: #FFFFFF;
+  border: 1px solid var(--color-line);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.panel:hover {
+  border-color: var(--color-honey);
+  box-shadow: 0 8px 24px -12px rgba(28, 23, 18, 0.18);
+}
+
+.panel-modal {
+  background: #FFFFFF;
+  border: 1px solid var(--color-line);
+  box-shadow: 0 30px 70px -20px rgba(28, 23, 18, 0.35);
+}
+
+/* Buttons: solid ink primary, thin honey-outline secondary — no gold gradients */
+.btn-primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+  background: #000000;
+  transform: translateY(-1px);
+}
+.btn-primary:disabled {
+  background: var(--color-ink-soft);
+  transform: none;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-ink);
+  color: var(--color-ink);
+  transition: all 0.25s ease;
+}
+.btn-outline:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.btn-honey {
+  background: transparent;
+  border: 1px solid var(--color-honey);
+  color: var(--color-honey-deep);
+  transition: all 0.25s ease;
+}
+.btn-honey:hover {
+  background: var(--color-honey);
+  color: #FFFFFF;
+  border-color: var(--color-honey);
+}
+
+/* Fig — the single bold moment, reserved for the prestige coffret section */
+.fig-panel {
+  background: linear-gradient(155deg, var(--color-fig) 0%, var(--color-fig-light) 100%);
+  color: #F1E2C4;
+}
+
+.text-honey-mark {
+  color: var(--color-honey);
+}
+
+.badge-line {
+  border: 1px solid var(--color-ink);
+  color: var(--color-ink);
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+.animate-subtle-float {
+  animation: subtleFloat 4s ease-in-out infinite;
+}

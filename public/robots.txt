@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /success
+Disallow: /cancel
+
+Sitemap: https://mieletepices.fr/sitemap.xml
