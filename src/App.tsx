@@ -208,14 +208,26 @@ const WEIGHT_OPTIONS = [
   { label: 'Plateau Prestige (1kg)', multiplier: 3.2, weight: '1kg' }
 ];
 
+const PRODUCTS_CACHE_KEY = 'me_products_cache_v1';
+
 export default function App() {
   // Navigation & Page State
   const [activeTab, setActiveTab] = useState<'home' | 'shop' | 'story' | 'contact' | 'admin' | 'success' | 'cancel'>('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
   // Products, Stock & Reviews State — loaded from Supabase (me_products / me_reviews)
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  // Seeded synchronously from localStorage so returning visitors see the
+  // catalogue immediately instead of a blank/loading page, while a fresh
+  // fetch still runs in the background to pick up any changes.
+  const [products, setProducts] = useState<Product[]>(() => {
+    try {
+      const cached = localStorage.getItem(PRODUCTS_CACHE_KEY);
+      return cached ? (JSON.parse(cached) as Product[]) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [isLoadingProducts, setIsLoadingProducts] = useState(products.length === 0);
   const [productReviews, setProductReviews] = useState<{ [productId: string]: { name: string; rating: number; comment: string; date: string }[] }>({});
 
   const loadCatalogue = async () => {
@@ -241,7 +253,13 @@ export default function App() {
       try {
         const { data: productRows, error: productsError } = await fetchProducts(timeoutMs);
         if (!productsError && productRows) {
-          setProducts((productRows as ProductRow[]).map(mapProductRow));
+          const mapped = (productRows as ProductRow[]).map(mapProductRow);
+          setProducts(mapped);
+          try {
+            localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(mapped));
+          } catch {
+            // storage full/unavailable — not critical, skip caching
+          }
           loaded = true;
           break;
         }
@@ -1053,6 +1071,12 @@ export default function App() {
                   </div>
 
                   {/* Show filtered creations */}
+                  {products.length === 0 && isLoadingProducts ? (
+                    <div className="text-center py-16">
+                      <div className="w-10 h-10 border-2 border-[#B9822E] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                      <p className="text-sm text-[#6B6259] font-light">Chargement de nos créations...</p>
+                    </div>
+                  ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pb-20 lg:pb-0">
                     {products
                       .filter(p => homeCategoryFilter === 'all' || p.category === homeCategoryFilter)
@@ -1093,6 +1117,7 @@ export default function App() {
                         );
                       })}
                   </div>
+                  )}
                 </div>
 
                 {/* Cart Summary Widget */}
