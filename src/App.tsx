@@ -223,20 +223,32 @@ export default function App() {
       return;
     }
 
-    try {
-      const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
-      const { data: productRows, error: productsError } = await Promise.race([
+    const fetchProducts = async (timeoutMs: number) => {
+      const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs));
+      return Promise.race([
         supabase.from('me_products').select('*').order('created_at', { ascending: false }),
         timeout,
       ]);
+    };
+
+    try {
+      let { data: productRows, error: productsError } = await fetchProducts(8000);
+      if (productsError || !productRows) {
+        // First attempt was slow/failed — retry once with more time before
+        // giving up, so a brief network hiccup doesn't wipe the real catalogue.
+        ({ data: productRows, error: productsError } = await fetchProducts(15000));
+      }
 
       if (productsError || !productRows) {
-        setProducts(FALLBACK_PRODUCTS);
+        // Only fall back to the hardcoded demo catalogue if we have nothing
+        // real on screen yet — never let a transient error/timeout overwrite
+        // an already-loaded catalogue (e.g. with stale default photos).
+        setProducts((prev) => (prev.length > 0 ? prev : FALLBACK_PRODUCTS));
       } else {
         setProducts((productRows as ProductRow[]).map(mapProductRow));
       }
     } catch {
-      setProducts(FALLBACK_PRODUCTS);
+      setProducts((prev) => (prev.length > 0 ? prev : FALLBACK_PRODUCTS));
     }
 
     try {
