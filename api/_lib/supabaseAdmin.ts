@@ -7,8 +7,11 @@ let client: SupabaseClient<any, any, any> | null = null;
 
 export function getSupabaseAdmin() {
   if (!client) {
-    const url = process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder_service_role_key';
+    const url = process.env.SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!url || !serviceRoleKey) {
+      throw new Error('SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY manquant sur le serveur.');
+    }
     client = createClient<any, any, any>(url, serviceRoleKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     });

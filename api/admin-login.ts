@@ -20,7 +20,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { password } = req.body || {};
-    const adminPassword = process.env.ADMIN_PASSWORD || 'sidimabrouk2500';
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminPassword) {
+      return sendJson(res, 500, { error: "ADMIN_PASSWORD n'est pas configuré sur le serveur." });
+    }
 
     if (!password || typeof password !== 'string' || !safeEqual(password, adminPassword)) {
       return sendJson(res, 401, { error: "Code d'accès incorrect." });
