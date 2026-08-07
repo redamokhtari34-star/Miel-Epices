@@ -215,11 +215,13 @@ export default function App() {
   
   // Products, Stock & Reviews State — loaded from Supabase (me_products / me_reviews)
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [productReviews, setProductReviews] = useState<{ [productId: string]: { name: string; rating: number; comment: string; date: string }[] }>({});
 
   const loadCatalogue = async () => {
     if (!isSupabaseConfigured) {
       setProducts(FALLBACK_PRODUCTS);
+      setIsLoadingProducts(false);
       return;
     }
 
@@ -231,25 +233,33 @@ export default function App() {
       ]);
     };
 
-    try {
-      let { data: productRows, error: productsError } = await fetchProducts(8000);
-      if (productsError || !productRows) {
-        // First attempt was slow/failed — retry once with more time before
-        // giving up, so a brief network hiccup doesn't wipe the real catalogue.
-        ({ data: productRows, error: productsError } = await fetchProducts(15000));
+    // Retry several times with growing timeouts before giving up — a slow
+    // connection should just take longer, never silently show wrong data.
+    const timeoutsMs = [8000, 12000, 16000, 20000];
+    let loaded = false;
+    for (const timeoutMs of timeoutsMs) {
+      try {
+        const { data: productRows, error: productsError } = await fetchProducts(timeoutMs);
+        if (!productsError && productRows) {
+          setProducts((productRows as ProductRow[]).map(mapProductRow));
+          loaded = true;
+          break;
+        }
+      } catch {
+        // try the next attempt
       }
-
-      if (productsError || !productRows) {
-        // Only fall back to the hardcoded demo catalogue if we have nothing
-        // real on screen yet — never let a transient error/timeout overwrite
-        // an already-loaded catalogue (e.g. with stale default photos).
-        setProducts((prev) => (prev.length > 0 ? prev : FALLBACK_PRODUCTS));
-      } else {
-        setProducts((productRows as ProductRow[]).map(mapProductRow));
-      }
-    } catch {
-      setProducts((prev) => (prev.length > 0 ? prev : FALLBACK_PRODUCTS));
     }
+
+    if (!loaded) {
+      // Only fall back to the hardcoded demo catalogue if we have nothing
+      // real on screen yet — never let a fetch failure overwrite an
+      // already-loaded catalogue (e.g. with stale default photos).
+      setProducts((prev) => (prev.length > 0 ? prev : FALLBACK_PRODUCTS));
+      // Keep trying in the background so the real catalogue can still
+      // replace the demo data once the connection recovers.
+      setTimeout(loadCatalogue, 10000);
+    }
+    setIsLoadingProducts(false);
 
     try {
       const { data: reviewRows, error: reviewsError } = await supabase
@@ -1243,7 +1253,13 @@ export default function App() {
             </div>
 
             {/* Product Grid */}
-            {filteredProducts.length === 0 ? (
+            {filteredProducts.length === 0 && isLoadingProducts ? (
+              <div className="text-center py-20 panel rounded-3xl">
+                <div className="w-10 h-10 border-2 border-[#B9822E] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <h3 className="text-xl font-serif mb-2">Chargement de nos créations...</h3>
+                <p className="text-sm text-[#6B6259] font-light">Un instant, merci de votre patience.</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="text-center py-20 panel rounded-3xl">
                 <AlertCircle className="w-12 h-12 text-[#B9822E] mx-auto mb-4" />
                 <h3 className="text-xl font-serif mb-2">Aucune pâtisserie trouvée</h3>
