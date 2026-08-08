@@ -1031,7 +1031,7 @@ export default function App() {
                   </div>
                   <div className="p-4 border border-white/15 rounded-2xl">
                     <div className="text-[#D9B26B] mb-1 font-serif text-xs uppercase tracking-wider font-bold">Miel Pur et Authentique</div>
-                    <div className="text-[10px] text-[#C9C0B2] leading-tight font-light">Un miel de terroir, sélectionné pour sa douceur dorée qui sublime nos recettes ancestrales.</div>
+                    <div className="text-[10px] text-[#C9C0B2] leading-tight font-light">Un miel sélectionné pour sa douceur dorée qui sublime nos recettes ancestrales.</div>
                   </div>
                 </div>
               </section>
