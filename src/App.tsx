@@ -992,14 +992,14 @@ export default function App() {
                 <div className="space-y-6 relative z-10">
                   <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#B9822E]/50 text-[#F1E2C4] text-[11px] font-medium uppercase tracking-wider">
                     <Sparkles className="w-3.5 h-3.5 text-[#B9822E]" />
-                    <span>Maison d'Artisanat d'Exception</span>
+                    <span>L'Excellence de la Pâtisserie Traditionnelle</span>
                   </div>
                   <h1 className="text-4xl lg:text-5xl font-serif leading-[1.1] text-[#F1E2C4]">
-                    L'Art Subtil de la <br/>
-                    <span className="italic font-medium" style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: '#D9B26B' }}>Pâtisserie d'Or</span>
+                    L'Art Authentique de la <br/>
+                    <span className="italic font-medium" style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', color: '#D9B26B' }}>Pâtisserie Constantinoise</span>
                   </h1>
                   <p className="text-[#C9C0B2] leading-relaxed max-w-sm text-sm font-light">
-                    Des couches de pâte filo étirées comme de la soie, garnies d'éclats d'amandes et de noix croquantes, infusées au miel de fleurs pur et parfumé.
+                    De notre légendaire baklawa croustillante et fondante aux délices orientaux les plus raffinés, retrouvez toute la passion et le savoir-faire de Miel et Épices. Des créations artisanales d'exception, façonnées dans la plus pure tradition de Constantine pour enchanter vos plus beaux moments.
                   </p>
                   <div className="flex flex-col gap-3 pt-2">
                     <button
@@ -1018,8 +1018,8 @@ export default function App() {
                       Notre Savoir-Faire
                     </button>
                     <div className="text-[10px] text-[#C9C0B2] flex flex-wrap items-center gap-3 justify-center lg:justify-start mt-2 uppercase tracking-widest font-medium">
+                      <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#B9822E]"></span> Fait Maison avec Amour</span>
                       <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#B9822E]"></span> Expédition Express en 24h</span>
-                      <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#B9822E]"></span> Emballage Fraîcheur</span>
                     </div>
                   </div>
                 </div>
