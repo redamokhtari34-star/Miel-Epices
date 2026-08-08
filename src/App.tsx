@@ -203,7 +203,7 @@ const FALLBACK_PRODUCTS: Product[] = [
 ];
 
 const WEIGHT_OPTIONS = [
-  { label: 'Boite Découverte (250g)', multiplier: 1.0, weight: '250g' },
+  { label: 'Boite Découverte', multiplier: 1.0, weight: '250g' },
   { label: 'Boite Partage (500g)', multiplier: 1.8, weight: '500g' },
   { label: 'Plateau Prestige (1kg)', multiplier: 3.2, weight: '1kg' }
 ];
