@@ -1027,12 +1027,12 @@ export default function App() {
                 {/* Feature Highlights / Value propositions */}
                 <div className="grid grid-cols-2 gap-3 mt-6 lg:mt-0 relative z-10">
                   <div className="p-4 border border-white/15 rounded-2xl">
-                    <div className="text-[#D9B26B] mb-1 font-serif text-xs uppercase tracking-wider font-bold">Noix de Grenoble</div>
-                    <div className="text-[10px] text-[#C9C0B2] leading-tight font-light">Sélectionnées à la main pour leur saveur boisée et leur croquant.</div>
+                    <div className="text-[#D9B26B] mb-1 font-serif text-xs uppercase tracking-wider font-bold">Noix et Amandes Sélectionnées</div>
+                    <div className="text-[10px] text-[#C9C0B2] leading-tight font-light">Riches en goût et rigoureusement choisies pour leur croquant, elles sont le secret de nos baklawas inoubliables.</div>
                   </div>
                   <div className="p-4 border border-white/15 rounded-2xl">
-                    <div className="text-[#D9B26B] mb-1 font-serif text-xs uppercase tracking-wider font-bold">Miel de Jujubier</div>
-                    <div className="text-[10px] text-[#C9C0B2] leading-tight font-light">Un nectar rare et biologique aux notes parfumées.</div>
+                    <div className="text-[#D9B26B] mb-1 font-serif text-xs uppercase tracking-wider font-bold">Miel Pur et Authentique</div>
+                    <div className="text-[10px] text-[#C9C0B2] leading-tight font-light">Un miel de terroir, sélectionné pour sa douceur dorée qui sublime nos recettes ancestrales.</div>
                   </div>
                 </div>
               </section>
@@ -1164,7 +1164,7 @@ export default function App() {
                   </div>
                   <h3 className="text-lg font-serif mb-3">100% Fait Main</h3>
                   <p className="text-sm text-[#6B6259] leading-relaxed font-light">
-                    Chaque plateau est pétri, empilé et découpé à la main selon la technique ancestrale algéroise de superposition de 24 feuilles de pâte filo.
+                    Chaque pâtisserie est préparée avec soin et façonnée à la main, dans le respect des recettes traditionnelles et du savoir-faire artisanal.
                   </p>
                 </div>
 
@@ -1172,9 +1172,9 @@ export default function App() {
                   <div className="w-12 h-12 rounded-full border border-[#E4DDD0] flex items-center justify-center mx-auto mb-6 text-[#B9822E]">
                     <Clock className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-serif mb-3">Miel de Fleur d'Oranger</h3>
+                  <h3 className="text-lg font-serif mb-3">Miel Sélectionné</h3>
                   <p className="text-sm text-[#6B6259] leading-relaxed font-light">
-                    Aucun sucre raffiné industriel. Nous nappons nos pâtisseries d'un miel de fleurs d'oranger bio, garant d'un arôme doux et d'un brillant naturel unique.
+                    Un enrobage généreux avec un miel de qualité, choisi pour sa pureté, qui apporte une douceur et un équilibre parfaits en bouche.
                   </p>
                 </div>
 
@@ -1184,7 +1184,7 @@ export default function App() {
                   </div>
                   <h3 className="text-lg font-serif mb-3">Fruits à Coque Nobles</h3>
                   <p className="text-sm text-[#6B6259] leading-relaxed font-light">
-                    Des amandes de la plaine de la Mitidja et des noix de Grenoble rigoureusement sélectionnées, torréfiées sur place pour exhaler tous leurs arômes et huiles essentielles.
+                    Des amandes et des noix rigoureusement choisies pour leur saveur authentique et leur texture croquante unique.
                   </p>
                 </div>
 
@@ -1192,9 +1192,9 @@ export default function App() {
                   <div className="w-12 h-12 rounded-full border border-[#E4DDD0] flex items-center justify-center mx-auto mb-6 text-[#B9822E]">
                     <ShoppingBag className="w-5 h-5" />
                   </div>
-                  <h3 className="text-lg font-serif mb-3">Livraison sous Coffret</h3>
+                  <h3 className="text-lg font-serif mb-3">Livraison Soignée</h3>
                   <p className="text-sm text-[#6B6259] leading-relaxed font-light">
-                    Expédiées sous coffrets scellés hermétiquement avec papier de soie, préservant le croustillant absolu et le nectar précieux jusqu'à votre table.
+                    Conditionnées avec attention dans des boîtes adaptées pour préserver toute la fraîcheur, le fondant et le croustillant jusqu'à chez vous.
                   </p>
                 </div>
               </div>
