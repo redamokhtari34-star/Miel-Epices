@@ -1019,7 +1019,6 @@ export default function App() {
                     </button>
                     <div className="text-[10px] text-[#C9C0B2] flex flex-wrap items-center gap-3 justify-center lg:justify-start mt-2 uppercase tracking-widest font-medium">
                       <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#B9822E]"></span> Fait Maison avec Amour</span>
-                      <span className="inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#B9822E]"></span> Expédition Express en 24h</span>
                     </div>
                   </div>
                 </div>
