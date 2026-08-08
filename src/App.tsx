@@ -2403,32 +2403,18 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Price & Initial Stock */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#6B6259] mb-1.5 font-medium">Prix de base (Boîte 250g) en € *</label>
-                  <input
-                    type="number"
-                    required
-                    min="1"
-                    step="0.5"
-                    value={newProductForm.price}
-                    onChange={(e) => setNewProductForm({ ...newProductForm, price: parseFloat(e.target.value) || 1 })}
-                    className="w-full bg-transparent border border-[#E4DDD0] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1712] transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-[#6B6259] mb-1.5 font-medium">Stock Initial (unités) *</label>
-                  <input
-                    type="number"
-                    required
-                    min="1"
-                    value={newProductForm.stock}
-                    onChange={(e) => setNewProductForm({ ...newProductForm, stock: parseInt(e.target.value) || 1 })}
-                    className="w-full bg-transparent border border-[#E4DDD0] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1712] transition-all"
-                  />
-                </div>
+              {/* Price */}
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-[#6B6259] mb-1.5 font-medium">Prix de base (Boîte 250g) en € *</label>
+                <input
+                  type="number"
+                  required
+                  min="1"
+                  step="0.5"
+                  value={newProductForm.price}
+                  onChange={(e) => setNewProductForm({ ...newProductForm, price: parseFloat(e.target.value) || 1 })}
+                  className="w-full bg-transparent border border-[#E4DDD0] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#1C1712] transition-all"
+                />
               </div>
 
               {/* Preset Image Picker & Custom URL */}
