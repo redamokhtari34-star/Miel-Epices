@@ -715,17 +715,6 @@ export default function App() {
     }
   };
 
-  const handleUpdateStock = async (productId: string, newStock: number) => {
-    const stock = Math.max(0, newStock);
-    setProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, stock } : p)));
-    if (!adminToken) return;
-    await fetch('/.netlify/functions/admin-products', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
-      body: JSON.stringify({ productId, stock }),
-    });
-  };
-
   const handleUpdatePrice = async (productId: string, newPrice: number) => {
     const price = Math.max(1, newPrice);
     setProducts((prev) => prev.map((p) => (p.id === productId ? { ...p, price } : p)));
@@ -1702,28 +1691,6 @@ export default function App() {
                           </div>
 
                           <div className="flex items-center gap-4 w-full sm:w-auto justify-between">
-                            {/* Stock Controller */}
-                            <div>
-                              <span className="text-[10px] uppercase text-[#6B6259] block mb-1">Stock (unités)</span>
-                              <div className="flex items-center gap-1 rounded-lg p-0.5 border border-[#E4DDD0]">
-                                <button
-                                  onClick={() => handleUpdateStock(p.id, p.stock - 1)}
-                                  className="p-1 text-[#6B6259] hover:text-[#1C1712] cursor-pointer"
-                                >
-                                  <Minus className="w-3.5 h-3.5" />
-                                </button>
-                                <span className={`text-xs font-semibold w-7 text-center ${p.stock <= 15 ? 'text-red-600 font-bold' : 'text-[#1C1712]'}`}>
-                                  {p.stock}
-                                </span>
-                                <button
-                                  onClick={() => handleUpdateStock(p.id, p.stock + 1)}
-                                  className="p-1 text-[#6B6259] hover:text-[#1C1712] cursor-pointer"
-                                >
-                                  <Plus className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            </div>
-
                             {/* Base Price Controller */}
                             <div>
                               <span className="text-[10px] uppercase text-[#6B6259] block mb-1">Prix de base</span>
