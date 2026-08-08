@@ -28,6 +28,18 @@ function generateOrderId(): string {
   return `ME-${year}-${suffix}`;
 }
 
+// Shipping rates configured in the Stripe Dashboard (Settings > Shipping charges).
+// Selected by total cart amount — thresholds are a starting point, adjust as needed.
+const SHIPPING_RATE_LOW = 'shr_1U2Aek74PAumVCNxvXAdFems'; // 2,99 €
+const SHIPPING_RATE_MID = 'shr_1U2AhW74PAumVCNxagisyhNK'; // 3,99 €
+const SHIPPING_RATE_HIGH = 'shr_1U2AiG74PAumVCNxdFGFsuZ0'; // 5,99 €
+
+function getShippingRateId(cartTotal: number): string {
+  if (cartTotal <= 20) return SHIPPING_RATE_LOW;
+  if (cartTotal <= 45) return SHIPPING_RATE_MID;
+  return SHIPPING_RATE_HIGH;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === 'OPTIONS') {
     applyCors(res);
@@ -108,6 +120,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       customer_email: shippingInfo?.email || undefined,
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel`,
+      shipping_options: [{ shipping_rate: getShippingRateId(total) }],
       metadata: {
         order_id: orderId,
         shipping_name: shippingInfo?.name || '',
