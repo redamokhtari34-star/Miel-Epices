@@ -1867,23 +1867,6 @@ export default function App() {
                     {selectedProduct.longDescription}
                   </p>
 
-                  {/* Weight / Format selector */}
-                  <div className="mb-6">
-                    <label className="block text-xs uppercase tracking-wider text-[#6B6259] mb-2 font-medium">Format de Conditionnement</label>
-                    <div className="grid grid-cols-1 gap-2">
-                      {WEIGHT_OPTIONS.map((opt) => (
-                        <button
-                          key={opt.weight}
-                          onClick={() => setSelectedWeight(opt)}
-                          className={`px-4 py-3 rounded-xl text-xs text-left uppercase tracking-wider font-semibold border flex justify-between items-center transition-all cursor-pointer ${selectedWeight.weight === opt.weight ? 'border-[#1C1712] bg-[#1C1712] text-white' : 'border-[#E4DDD0] text-[#6B6259] hover:border-[#1C1712]'}`}
-                        >
-                          <span>{opt.label}</span>
-                          <span className="font-bold">{(selectedProduct.price * opt.multiplier).toFixed(2)} €</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Conservation advice */}
                   <div className="border border-[#E4DDD0] p-4 rounded-xl mb-6">
                     <span className="text-xs uppercase text-[#8C5F1E] font-semibold tracking-wider block mb-1">Conservation artisanale</span>
