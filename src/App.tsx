@@ -1203,10 +1203,10 @@ export default function App() {
             {/* CALL TO ACTION — the one bold, saturated moment on the page (fig + gold) */}
             <section className="py-20 relative overflow-hidden rounded-3xl max-w-7xl mx-auto fig-panel">
               <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-                <span className="text-[#D9B26B] text-xs uppercase tracking-[0.25em] font-medium">Boutique de Luxe</span>
+                <span className="text-[#D9B26B] text-xs uppercase tracking-[0.25em] font-medium">Boutique Artisanale</span>
                 <h2 className="text-4xl sm:text-5xl font-serif mt-2 mb-6 text-[#F1E2C4]">Faites Plaisir à Vos Proches</h2>
                 <p className="text-base sm:text-lg text-[#D9CFC2] font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-                  Offrez un voyage sensoriel au cœur d'Alger. Nos coffrets haut de gamme sont scellés et présentés avec un ruban de satin or, idéaux pour les fêtes de l'Aïd, mariages, ou repas d'exception.
+                  Offrez un voyage sensoriel au cœur de Constantine. Nos coffrets gourmands sont préparés avec soin, idéaux pour les fêtes de l'Aïd, les mariages ou tous vos moments d'exception.
                 </p>
                 <button
                   onClick={() => setActiveTab('shop')}
