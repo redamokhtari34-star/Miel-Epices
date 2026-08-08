@@ -367,6 +367,7 @@ export default function App() {
 
   // Add Product Modal & Form State
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [newProductForm, setNewProductForm] = useState({
     name: '',
     category: 'amande' as 'amande' | 'noix' | 'assortiment',
@@ -788,53 +789,81 @@ export default function App() {
     setUploadingPhotoForId(null);
   };
 
+  const emptyProductForm = {
+    name: '',
+    category: 'amande' as 'amande' | 'noix' | 'assortiment',
+    price: 28,
+    stock: 25,
+    description: '',
+    longDescription: '',
+    ingredients: 'Amandes blanchies, Miel pur d\'oranger, Beurre clarifié (Smen), Eau de fleur d\'oranger, Pâte filo',
+    conservation: 'Conserver à l\'abri de l\'humidité et de la chaleur dans sa boîte d\'origine bien fermée. Se conserve 3 semaines.',
+    badge: 'Nouveauté',
+    image: amandeImg,
+    customImageUrl: ''
+  };
+
+  const closeProductModal = () => {
+    setIsAddProductOpen(false);
+    setEditingProductId(null);
+    setNewProductForm(emptyProductForm);
+  };
+
+  const openEditProduct = (p: Product) => {
+    setEditingProductId(p.id);
+    setNewProductForm({
+      name: p.name,
+      category: p.category,
+      price: p.price,
+      stock: p.stock,
+      description: p.description,
+      longDescription: p.longDescription,
+      ingredients: p.ingredients.join(', '),
+      conservation: p.conservation,
+      badge: p.badge || '',
+      image: amandeImg,
+      customImageUrl: p.image,
+    });
+    setIsAddProductOpen(true);
+  };
+
   const handleAddProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProductForm.name.trim() || !adminToken) return;
 
     const finalImage = newProductForm.customImageUrl.trim() || newProductForm.image;
+    const payload = {
+      name: newProductForm.name.trim(),
+      category: newProductForm.category,
+      price: Number(newProductForm.price) || 20,
+      stock: Number(newProductForm.stock) || 15,
+      description: newProductForm.description.trim(),
+      longDescription: newProductForm.longDescription.trim(),
+      ingredients: newProductForm.ingredients,
+      conservation: newProductForm.conservation.trim(),
+      badge: newProductForm.badge.trim(),
+      image: finalImage,
+    };
 
     const res = await fetch('/.netlify/functions/admin-products', {
-      method: 'POST',
+      method: editingProductId ? 'PATCH' : 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
-      body: JSON.stringify({
-        name: newProductForm.name.trim(),
-        category: newProductForm.category,
-        price: Number(newProductForm.price) || 20,
-        stock: Number(newProductForm.stock) || 15,
-        description: newProductForm.description.trim(),
-        longDescription: newProductForm.longDescription.trim(),
-        ingredients: newProductForm.ingredients,
-        conservation: newProductForm.conservation.trim(),
-        badge: newProductForm.badge.trim(),
-        image: finalImage,
-      }),
+      body: JSON.stringify(editingProductId ? { productId: editingProductId, ...payload } : payload),
     });
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      console.warn("Erreur ajout produit:", data.error);
+      console.warn(editingProductId ? "Erreur modification produit:" : "Erreur ajout produit:", data.error);
       return;
     }
 
     const { product } = await res.json();
-    setProducts((prev) => [mapProductRow(product), ...prev]);
-    setIsAddProductOpen(false);
-
-    // Reset form
-    setNewProductForm({
-      name: '',
-      category: 'amande',
-      price: 28,
-      stock: 25,
-      description: '',
-      longDescription: '',
-      ingredients: 'Amandes blanchies, Miel pur d\'oranger, Beurre clarifié (Smen), Eau de fleur d\'oranger, Pâte filo',
-      conservation: 'Conserver à l\'abri de l\'humidité et de la chaleur dans sa boîte d\'origine bien fermée. Se conserve 3 semaines.',
-      badge: 'Nouveauté',
-      image: amandeImg,
-      customImageUrl: ''
-    });
+    if (editingProductId) {
+      setProducts((prev) => prev.map((p) => (p.id === editingProductId ? mapProductRow(product) : p)));
+    } else {
+      setProducts((prev) => [mapProductRow(product), ...prev]);
+    }
+    closeProductModal();
   };
 
   const handleDeleteProduct = async (productId: string) => {
@@ -1656,15 +1685,20 @@ export default function App() {
                                 className="hidden"
                               />
                             </label>
-                            <div>
-                              <h4 className="font-serif font-bold text-sm">{p.name}</h4>
+                            <button
+                              type="button"
+                              onClick={() => openEditProduct(p)}
+                              title="Modifier ce produit"
+                              className="text-left cursor-pointer group"
+                            >
+                              <h4 className="font-serif font-bold text-sm group-hover:text-[#B9822E] group-hover:underline transition-colors">{p.name}</h4>
                               <div className="flex items-center gap-2">
                                 <span className="text-[10px] text-[#6B6259] uppercase tracking-wider">{p.category}</span>
                                 {p.badge && (
                                   <span className="text-[9px] bg-[#F1E2C4] text-[#8C5F1E] px-1.5 py-0.5 rounded font-medium">{p.badge}</span>
                                 )}
                               </div>
-                            </div>
+                            </button>
                           </div>
 
                           <div className="flex items-center gap-4 w-full sm:w-auto justify-between">
@@ -2326,7 +2360,7 @@ export default function App() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#16130F]/80 backdrop-blur-md animate-fade-in overflow-y-auto">
           <div className="panel-modal rounded-3xl max-w-2xl w-full my-8 p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setIsAddProductOpen(false)}
+              onClick={closeProductModal}
               className="absolute top-5 right-5 p-2 rounded-full text-[#6B6259] hover:text-[#1C1712] bg-white border border-[#E4DDD0] hover:border-[#1C1712] transition-all cursor-pointer"
             >
               <X className="w-5 h-5" />
@@ -2338,11 +2372,13 @@ export default function App() {
               </div>
               <div>
                 <span className="text-xs text-[#8C5F1E] uppercase tracking-widest font-semibold">Console Artisan</span>
-                <h2 className="font-serif text-2xl font-bold">Ajouter une Création</h2>
+                <h2 className="font-serif text-2xl font-bold">{editingProductId ? 'Modifier la Création' : 'Ajouter une Création'}</h2>
               </div>
             </div>
             <p className="text-xs text-[#6B6259] mb-6 leading-relaxed">
-              Remplissez les détails ci-dessous pour ajouter une nouvelle pâtisserie artisanale au catalogue en ligne.
+              {editingProductId
+                ? 'Modifiez les détails de cette pâtisserie artisanale.'
+                : 'Remplissez les détails ci-dessous pour ajouter une nouvelle pâtisserie artisanale au catalogue en ligne.'}
             </p>
 
             <form onSubmit={handleAddProductSubmit} className="space-y-5">
@@ -2480,7 +2516,7 @@ export default function App() {
               <div className="pt-4 border-t border-[#E4DDD0] flex items-center justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsAddProductOpen(false)}
+                  onClick={closeProductModal}
                   className="px-5 py-3 border border-[#E4DDD0] text-[#6B6259] hover:text-[#1C1712] text-xs uppercase tracking-wider font-semibold rounded-full cursor-pointer transition-all"
                 >
                   Annuler
@@ -2490,7 +2526,7 @@ export default function App() {
                   className="px-6 py-3.5 btn-primary text-xs uppercase tracking-widest font-bold rounded-full cursor-pointer flex items-center gap-2"
                 >
                   <Check className="w-4 h-4" />
-                  <span>Publier la Création</span>
+                  <span>{editingProductId ? 'Enregistrer les Modifications' : 'Publier la Création'}</span>
                 </button>
               </div>
             </form>

@@ -56,13 +56,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'PATCH') {
     try {
-      const { productId, price, stock, image } = req.body || {};
+      const { productId, price, stock, image, name, category, description, longDescription, ingredients, conservation, badge } = req.body || {};
       if (!productId) return sendJson(res, 400, { error: 'productId requis.' });
 
-      const updates: Record<string, number | string> = {};
+      const updates: Record<string, number | string | string[] | null> = {};
       if (price !== undefined) updates.price = Math.max(0, Number(price));
       if (stock !== undefined) updates.stock = Math.max(0, Number(stock));
       if (image !== undefined && String(image).trim()) updates.image = String(image).trim();
+      if (name !== undefined && String(name).trim()) updates.name = String(name).trim();
+      if (category !== undefined && ['amande', 'noix', 'assortiment'].includes(category)) updates.category = category;
+      if (description !== undefined) updates.description = String(description).trim();
+      if (longDescription !== undefined) updates.long_description = String(longDescription).trim();
+      if (conservation !== undefined) updates.conservation = String(conservation).trim();
+      if (badge !== undefined) updates.badge = String(badge).trim() || null;
+      if (ingredients !== undefined) {
+        const parsedIngredients = Array.isArray(ingredients)
+          ? ingredients
+          : String(ingredients || '')
+              .split(',')
+              .map((s: string) => s.trim())
+              .filter(Boolean);
+        if (parsedIngredients.length > 0) updates.ingredients = parsedIngredients;
+      }
 
       const { data, error } = await supabase
         .from('me_products')
